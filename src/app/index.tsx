@@ -1,98 +1,172 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  Alert,
+  Image,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+export default function ProfileScreen() {
+  const profile = {
+    name: "Vimansa Gamage",
+    email: "vimansagamage2003@gmail.com",
+    points: 0,
+  };
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+  const handleAdd = () => {
+    Alert.alert("Add", "Add button pressed.");
+  };
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#000" />
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>My Profile</Text>
+      </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      <ScrollView contentContainerStyle={styles.content}>
+        {/* Avatar with green check */}
+        <View style={styles.avatarWrapper}>
+          <View style={styles.avatarCircle}>
+            <Image
+              source={require("../../assets/images/profile.jpg")}
+              style={styles.profileImage}
+            />
+          </View>
+          <Text style={styles.check}>✔</Text>
+        </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+        <View style={styles.divider} />
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        {/* Name */}
+        <Text style={styles.label}>Name</Text>
+        <Text style={styles.value}>{profile.name}</Text>
+
+        {/* Email */}
+        <Text style={styles.label}>Email</Text>
+        <View style={styles.row}>
+          <Text style={styles.icon}>✉</Text>
+          <Text style={styles.value}>{profile.email}</Text>
+        </View>
+
+        {/* Points */}
+        <Text style={styles.label}>Points</Text>
+        <View style={styles.row}>
+          <Text style={styles.icon}>★</Text>
+          <Text style={styles.value}>{profile.points}</Text>
+        </View>
+      </ScrollView>
+
+      {/* Floating action button */}
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={handleAdd}
+        accessibilityLabel="Add"
+      >
+        <Text style={styles.fabText}>+</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: "#F4F4F4",
   },
-  safeArea: {
+  header: {
+    backgroundColor: "#000000",
+    paddingTop: 45,
+    paddingBottom: 14,
+    alignItems: "center",
+  },
+  headerTitle: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#FFFFFF",
+  },
+  content: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 100,
+  },
+  avatarWrapper: {
+    alignSelf: "center",
+    marginBottom: 12,
+  },
+  avatarCircle: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#F3B6C2",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+  },
+  profileImage: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+  },
+  check: {
+    position: "absolute",
+    right: -2,
+    bottom: 2,
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "#00E600",
+  },
+  divider: {
+    height: 1.5,
+    backgroundColor: "#000000",
+    marginBottom: 18,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#000000",
+    marginBottom: 6,
+  },
+  value: {
+    fontSize: 14,
+    color: "#222222",
+    marginBottom: 15,
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 15,
   },
-  title: {
-    textAlign: 'center',
+  icon: {
+    fontSize: 16,
+    color: "#000000",
+    width: 20,
+    textAlign: "center",
+    marginRight: 5,
   },
-  code: {
-    textTransform: 'uppercase',
+  fab: {
+    position: "absolute",
+    right: 20,
+    bottom: 20,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: "#000000",
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 6,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  fabText: {
+    color: "#FFFFFF",
+    fontSize: 28,
+    lineHeight: 30,
   },
 });
